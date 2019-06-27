@@ -81,4 +81,105 @@ function loops()
         yourName = prompt('Who are you?')
     }while(!yourName)
     console.log(yourName)
+
+    // Calculate 2^10 with for loop.
+    var result = 1
+    for(var counter = 0; counter < 10; counter++)
+        result *= 2
+    console.log(result)
+
+    // Break statement test.
+    for(var current = 20; ;current++)
+    {
+        if(current % 7 == 0)
+            break
+    }
+    console.log(current)
+
+    // Switch statement.
+    switch (prompt('What is weather like?'))
+    {
+        case 'rainy':
+            console.log('Remember to bring an umbrella.')
+            break
+        case 'sunny':
+            console.log('Dress lightly')
+            break
+        case 'cloudy':
+            console.log('Go outside.')
+            break
+        default:
+            console.log('Unknown weather type!')
+            break
+    }
+}
+
+// Exercises.
+function LoopTriangle()
+{
+    str = '#'
+    for (var counter = 0; counter < 7; counter++)
+    {
+        console.log(str)
+        str += '#'
+    }
+}
+
+function FizzBuzz()
+{
+    for (var number = 1; number < 101; number++)
+    {
+        if(number % 3 == 0)
+        {
+            if(number % 5 == 0)
+                console.log("FizzBuzz")
+            else
+                console.log('Fizz')
+        }
+        else if(number % 5 == 0)
+            console.log('Buzz')
+        else
+            console.log(number)
+    }
+}
+
+function ChessBoard(boardSize)
+{
+    boardString = ''
+    blackField = '#'
+    whiteField = '_'
+
+    if(!isNaN(boardSize))
+    {
+        if(boardSize <= 0)
+            console.log('Not a positive number')
+        else
+        {
+            for(var row = 0; row < boardSize; row++)
+            {
+                var currentField
+                // Set starting field for this row.
+                if(row % 2 != 0)
+                    currentField = blackField
+                else
+                    currentField = whiteField
+
+                for(var column = 0; column < boardSize; column++)
+                {
+                    boardString += currentField
+                    // Change field.
+                    if(currentField == blackField)
+                        currentField = whiteField
+                    else
+                        currentField = blackField
+                }
+                // Place for next row.
+                boardString += '\n'
+            }
+        }
+    }
+    else
+        console.log('Not a number')
+    
+    return boardString
 }

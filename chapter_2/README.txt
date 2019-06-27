@@ -8,4 +8,5 @@ What I learned:
 	and functions related to browser.
 	+ Type names start with big letters.
 	+ Number function returns NaN if argument was not number.
+	+ Variables declared in for loop, live outside the for loop.
 	
