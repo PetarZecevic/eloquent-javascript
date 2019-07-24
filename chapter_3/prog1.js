@@ -237,3 +237,99 @@ function example9()
     printFarmInventory2(7, 16, 3)
     console.log('\n')
 }
+
+function exercise1()
+{
+    console.log('\n\nExercise 1 - Minimum')
+    function minimum(a, b)
+    {
+        if(a < b)
+            return a
+        else
+            return b
+    }
+
+    console.log('Min(5, null) = ', minimum(5, null))
+    console.log('Min(-1, 1) = ', minimum(-1,1))
+}
+
+function exercise2()
+{
+    console.log('\n\nExercise 2 - Recursion')
+    // If number is even, function returns True otherwise False or
+    // undefined if argument is not a number.
+    function isEven(number)
+    {
+        // Depends on sign of a number.
+        var addConstant = -2
+
+        // Recursive subfunction.
+        function recursive(num)
+        {
+            if(num == 0)
+                return true
+            else if(num == 1)
+                return false
+            else
+                return recursive(num + addConstant)
+        }
+
+        // Guarding from invalid argument values.
+        if(!isNaN(number))
+        {
+            var num = Number(number)
+            if(num < 0)
+                addConstant = 2
+            return recursive(num)   
+        }
+    }
+
+    console.log('Even(50) = ', isEven(50))
+    console.log('Even(75) = ', isEven(75))
+    console.log('Even("8") = ', isEven('8'))
+    console.log('Even("8a") = ', isEven('8a'))
+    console.log('Even(7) = ', isEven(7))
+    console.log('Even(-10) = ', isEven(-10))
+    console.log('Even(-3) = ', isEven(-3))
+    console.log('Even("-5") = ', isEven('-5'))
+}
+
+function exercise3()
+{
+    console.log('\n\nExercise 3 - Bean counting')
+
+    // Count number of B's occurences in string parameter.
+    function countBs(string)
+    {
+        var counter = 0
+        for(var index = 0; index < string.length; index++)
+        {
+            if(string[index] == 'B')
+                counter++
+        }
+        return counter
+    }
+
+    console.log('Bs("BaghjkBhashB") = ', countBs("BaghjkBhashB"))
+    console.log('Bs("asa") = ', countBs("asa"))
+
+    // Function that count number of occurences of passed char argument.
+    function countChar(string, char)
+    {
+        var counter = 0
+        for(var index = 0; index < string.length; index++)
+        {
+            if(string[index] == char)
+                counter++
+        }
+        return counter
+    }   
+
+    function countBsImproved(string)
+    {
+        return countChar(string, 'B')
+    }
+
+    console.log('BsImproved("BaghjkBhashB") = ', countBsImproved("BaghjkBhashB"))
+    console.log('BsImproved("asa") = ', countBsImproved("asa"))
+}
