@@ -17,4 +17,7 @@ What I learned:
 	- To access property with operator [] you must type object_name["property_name"], numbers are
 	exceptions, example: myObject[1], myObject["name"].
 	- Numbers,strings and Booleans are immutable.
+	- Arrays have an indexOf method that tries to find a given value (in this
+	case, the event name) in the array and returns the index at which it
+	was found or -1 if it wasn’t found.
 	
