@@ -236,6 +236,54 @@ function example7()
     console.log(phi(tableFor("peanut teeth", JOURNAL)))
 }
 
+// Arrayology
+function example8()
+{
+    console.log('\nArrayology')
+
+    var todoList = []
+
+    function rememberTo(task){
+        // Append element at the end of array.
+        todoList.push(task)
+    }
+
+    function whatIsNext(){
+        // Get first element from array and remove it.
+        return todoList.shift()
+    }
+
+    function urgentlyRememberTo(urgentTask){
+        // Append element at the beggining of array.
+        todoList.unshift(urgentTask)
+    }
+
+    rememberTo('Wash dishes')
+    rememberTo('Training')
+
+    console.log(whatIsNext())
+    urgentlyRememberTo('Take medicine')
+    console.log(whatIsNext())
+    console.log(whatIsNext())
+
+    // Difference between indexOf and lastIndexOf.
+    console.log([1, 2, 3, 2, 1].indexOf(2))
+    console.log([1, 2, 3, 2, 1].lastIndexOf(2))
+
+    // Get subarray from array.
+    console.log([0, 1, 2, 3, 4].slice(2, 4))
+    console.log([0, 1, 2, 3, 4].slice(2))
+    
+    // Remove element in array at given index.
+    function remove(array, index){
+        var leftHalf = array.slice(0, index)
+        var rightHalf = array.slice(index+1)
+        return leftHalf.concat(rightHalf) // Merge two arrays.
+    }
+
+    console.log(remove([1, 2, 3, 4, 5], 2))
+}
+
 // Journal from the website of this book.
 var JOURNAL = [
     {"events":["carrot","exercise","weekend"],"squirrel":false},

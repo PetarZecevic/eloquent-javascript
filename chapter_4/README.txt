@@ -20,4 +20,6 @@ What I learned:
 	- Arrays have an indexOf method that tries to find a given value (in this
 	case, the event name) in the array and returns the index at which it
 	was found or -1 if it wasn’t found.
+	- Array method lastIndexOf works as indexOf with modification that
+	it starts the search from the last element of the array.
 	
