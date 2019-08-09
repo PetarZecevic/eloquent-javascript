@@ -284,6 +284,90 @@ function example8()
     console.log(remove([1, 2, 3, 4, 5], 2))
 }
 
+// Strings and their properties.
+function example9()
+{
+    console.log('\nStrings')
+    var myString = 'Fido'
+    myString.myProperty = 'value'
+    console.log(myString.myProperty) // Not an object.
+    
+    console.log('aba bba dabra hello'.indexOf('da')) // okay.
+    console.log('aba bba dabra hello'.indexOf('dad')) // not in string, -1 returned.
+    
+    console.log('aba bba dabra hello'.trim()) // remove white spaces from the beginning to the end of string.
+
+    console.log('aba bba dabra hello'.charAt(5))
+    console.log('aba bba dabra hello'[5])
+
+}
+
+// The arguments object.
+function example10()
+{
+    console.log('\nThe arguments object')
+
+    function argumentCounter(){
+        console.log('You gave me', arguments.length, 'arguments.')
+    }
+
+    argumentCounter('A', 'B', 'C', 'D')
+    argumentCounter()
+
+    function operatorBox(init, operator){
+        var result = init
+        if(arguments.length > 2)
+        {
+            // i = 1, because first argument is operator!
+            for(var i = 2; i < arguments.length; i++)
+            {
+                result = operator(result, arguments[i])
+            }
+        }
+        return result
+    }
+
+    function sum(a, b){
+        return a+b
+    }
+    function product(a, b){
+        return a*b
+    }
+
+    console.log(operatorBox(0, sum, 1, 2, 3, 4, 5))
+    console.log(operatorBox(0, sum, 1, 2, 3))
+    console.log(operatorBox(1, product, 1, 2, 3, 4, 5))
+}
+
+// The Math object.
+function example11()
+{
+    console.log('\nMath object')
+
+    function randomPointOnCircle(radius){
+        var angle = Math.random() * 2 * Math.PI
+        return {x : radius * Math.cos(angle),
+                y : radius * Math.sin(angle)}
+    }
+
+    console.log(randomPointOnCircle(1))
+    
+    // Scale random numbers.
+    console.log(Math.random() * 10)
+    console.log(Math.floor(Math.random() * 100))
+    console.log(Math.ceil(Math.random() * 5))
+    console.log(Math.round(Math.random() * 2))
+}
+
+var myVar = 10
+// The global object.
+function example12()
+{
+    console.log('\nThe global object')
+    console.log('myVar' in window)
+    console.log(window.myVar)
+}
+
 // Journal from the website of this book.
 var JOURNAL = [
     {"events":["carrot","exercise","weekend"],"squirrel":false},
