@@ -368,6 +368,64 @@ function example12()
     console.log(window.myVar)
 }
 
+// The sum of range.
+function exercise1()
+{
+    console.log('\nThe sum of range')
+
+    function range(start, end){
+        var r = []
+        var step = 1 // Default step.
+        var comparison = function(a,b) {return a <= b} // Default comparison.
+        if(arguments.length != 2)
+        {
+            if(arguments.length == 3)
+            {
+                // Step defined.
+                step = arguments[2]
+                if(step < 0)
+                    comparison = function(a,b) {return a >= b} // Descend.
+            }
+            else
+                // Wrong number of arguments.
+                return r
+        }
+        for(var i = start; comparison(i,end); i += step)
+            r.push(i)
+        return r
+    }
+
+    function sum(array){
+        var s = 0
+        for(var i = 0; i < array.length; i++)
+            s += array[i]
+        return s
+    }
+
+    console.log(sum(range(1, 10)))
+    console.log(sum(range(1, 5, 2)))
+    console.log(sum(range(1, 5, 3)))
+    console.log(sum(range(5, -1, -2)))
+}
+
+// Reversing an array.
+function exercise2()
+{
+    console.log('\nReversing an array')
+}
+
+// A list.
+function exercise3()
+{
+    console.log('\nA list')
+}
+
+// Deep comparison.
+function exersice4()
+{
+    console.log('\nDeep comparison')
+}
+
 // Journal from the website of this book.
 var JOURNAL = [
     {"events":["carrot","exercise","weekend"],"squirrel":false},
