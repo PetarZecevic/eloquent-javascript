@@ -412,16 +412,125 @@ function exercise1()
 function exercise2()
 {
     console.log('\nReversing an array')
+
+    function reverseArray(array){
+        var newArray = []
+        for(var i = array.length-1; i >= 0; i--){
+            newArray.push(array[i])
+        }
+        return newArray
+    }
+
+    function reverseArrayInPlace(array){
+        for(var i = 0; i < Math.floor(array.length / 2); i++)
+        {
+            var tmp = array[i]
+            array[i] = array[array.length-i-1]
+            array[array.length-i-1] = tmp
+        }
+    }
+    
+    console.log(reverseArray([1, 2, 3, 4, 5]))
+    console.log(reverseArray([1, 2, 3, 4]))
+    var arr = [1, 2, 3, 4, 5]
+    reverseArrayInPlace(arr)
+    console.log(arr)
+    arr = [1, 2, 3, 4]
+    reverseArrayInPlace(arr)
+    console.log(arr)
 }
 
 // A list.
 function exercise3()
 {
     console.log('\nA list')
+
+    function arrayToList(array){
+        if(array.length >= 1)
+            return {
+                value: array[0],
+                rest: arrayToList(array.slice(1))
+            }
+        else
+            return null
+    }
+
+    function arrayToListIterative(array){
+        if(array.length >= 1)
+        {
+            var list = {value: array[0], rest: null}
+            var curr = list
+            for(var i = 1; i < array.length; i++)
+            {
+                var tmp = {value: array[i], rest: null}
+                curr.rest = tmp
+                curr = tmp
+            }
+            return list
+        }
+        else
+            return null
+    }
+
+    function listToArray(list){
+        arr = []
+        function recursive(l){
+            if(!l)
+                return
+            arr.push(l.value)
+            recursive(l.rest)
+        }
+        recursive(list)
+        return arr
+    }
+
+    function listToArrayIterative(list){
+        arr = []
+        while(list)
+        {
+            arr.push(list.value)
+            list = list.rest
+        }
+        return arr
+    }
+
+    function prepend(element, list)
+    {
+        return {value: element, rest: list}
+    }
+
+    function nth(list, position)
+    {
+        if(!list)
+            return undefined
+        else if(position < 0)
+            return undefined
+        else if(position == 0)
+            return list.value
+        else
+            return nth(list.rest, position-1)
+    }
+
+    var l1 = arrayToList([1, 2, 3])
+    var l2 = arrayToListIterative([1, 2, 3])
+    
+    console.log(l1)
+    console.log(l2)
+
+    var arr1 = listToArray(l1)
+    var arr2 = listToArrayIterative(l2)
+
+    console.log(arr1)
+    console.log(arr2)
+
+    console.log(prepend(10, l1))
+    console.log(nth(l1, 2))
+    console.log(nth(l1, 3))
+    console.log(nth(l1, 0))
 }
 
 // Deep comparison.
-function exersice4()
+function exercise4()
 {
     console.log('\nDeep comparison')
 }
