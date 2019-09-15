@@ -533,6 +533,54 @@ function exercise3()
 function exercise4()
 {
     console.log('\nDeep comparison')
+    function deepEqual(left, right){
+        // Guard against null case.
+        if(left == null && right == null){
+            return true
+        }
+        if(left == null || right == null){
+            return false
+        }
+        
+        var leftType = typeof left
+        var rightType = typeof right
+
+        if(leftType == rightType){
+            if(leftType == 'object'){
+                // Compare objects.
+                var result = true
+                for(property in left){
+                    if(!(property in right))
+                        return false
+                    else
+                        result = result && deepEqual(left[property], right[property])                    
+                }
+                // Check if right has properties that left doesn't.
+                for(property in right){
+                    if(!(property in left))
+                        return false
+                }
+                return result
+            }
+            else{
+                // Compare values.
+                return left === right
+            }
+        }
+        else
+            return false
+    }
+
+    console.log(deepEqual(1, 2))
+    console.log(deepEqual(1, null))
+    console.log(deepEqual(null, 2))
+    console.log(deepEqual(null, null))
+    console.log(deepEqual({a: 1}, {b: 1}))
+    console.log(deepEqual({a: 1}, {a: 1}))
+    console.log(deepEqual({a: 1}, {a: 1, b: 2}))
+    console.log(deepEqual({a: 1}, {a: 2}))
+    console.log(deepEqual({a: 1, b: 3}, {a: 1}))
+    console.log(deepEqual({a: {c : 1}}, {a: 1}))
 }
 
 // Journal from the website of this book.
