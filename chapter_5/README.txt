@@ -10,3 +10,5 @@ What I learned:
     by double quotes, and only simple data expressions are allowed—no
     function calls, variables, or anything that involves actual computation.
     Comments are not allowed in JSON.
+
+    - Standard higher-order functions on arrays: filter, map, reduce.
