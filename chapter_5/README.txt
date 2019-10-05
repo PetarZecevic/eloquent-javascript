@@ -5,3 +5,8 @@ What I learned:
     - JavaScript functions have an 'apply' method.
     You pass it an array (or array-like object) of arguments, and it will call
     the function with those arguments.
+
+    - JSON rules: All property names have to be surrounded
+    by double quotes, and only simple data expressions are allowed—no
+    function calls, variables, or anything that involves actual computation.
+    Comments are not allowed in JSON.

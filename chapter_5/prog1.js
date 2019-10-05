@@ -110,3 +110,15 @@ function example3(){
     transparentWrapping(argumentPrinter)(1, 2, 3, 4, 5)
     transparentWrapping(argumentPrinter)('a', 3, 4, 'magic function')
 }
+
+// JSON
+function example4(){
+    console.log('\nJSON\n')
+
+    var string = JSON.stringify({name: "Mike", born: 1990})
+    console.log(string)
+
+    var person = JSON.parse('{"name" : "Mike", "born" : 1990}')
+    console.log('Name: ', person.name)
+    console.log('Born: ', person.born)
+}
