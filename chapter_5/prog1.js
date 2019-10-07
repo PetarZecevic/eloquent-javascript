@@ -328,6 +328,166 @@ function example10(){
     console.log(ancestors.filter(isInSet.bind(null, theSet)))
 }
 
+// Flattening.
+function exercise1(){
+    console.log('\nFlattening\n')
+    function flatten(array2D){
+        return array2D.reduce(function(baseArray, array){
+            return baseArray.concat(array)
+        }, [])
+    }
+
+    console.log(flatten([[1, 2, 3], [4, 5, 6], [7]]))
+
+    function flattenRecursive(arrayTree){
+        function merge(baseArray, array){
+            function quantify(arr){
+                // Check if parameter is array.
+                if(arr.length){
+                    return arr.reduce(merge, [])
+                }   
+                else{
+                    return arr
+                }
+            }
+            return baseArray.concat(quantify(array))
+        }
+        return arrayTree.reduce(merge, [])
+    }
+
+    var tree = [[1, 2, [3, 4, [5]]], 6, 7, [8, 9], [[[10]]]]
+    console.log(flattenRecursive(tree))
+}
+
+// Mother-child age difference. 
+function exercise2(){
+    console.log('\nMother-child age difference\n')
+
+    function average(array){
+        if(array.length != 0){    
+            function plus(a, b){
+                return a+b
+            }
+            return array.reduce(plus) / array.length
+        }
+    }
+
+    var byName = {}
+    var ancestors = JSON.parse(ANCESTRY_FILE)
+    ancestors.forEach(function(person){
+        byName[person.name] = person
+    })
+    
+    var ageDifferenceArray = ancestors.map(function(person){ 
+        if(byName[person.mother])
+            return person.born - byName[person.mother].born
+        else
+            return 0}).filter(function(ageDifference){ return ageDifference > 0})
+    console.log(average(ageDifferenceArray))
+}
+
+// Historical life expectancy.
+function exercise3(){
+    console.log('\nHistorical life expectancy\n')
+
+    function average(array){
+        if(array.length != 0){    
+            function plus(a, b){
+                return a+b
+            }
+            return array.reduce(plus) / array.length
+        }
+    }
+
+    var centuries = {}
+    var ancestors = JSON.parse(ANCESTRY_FILE)
+    ancestors.forEach(function(person){
+        century = Math.ceil(person.died / 100)
+        if(century in centuries)
+            centuries[century].push(person.died - person.born)
+        else
+            centuries[century] = [person.died - person.born]
+    })
+    for(var century in centuries){
+        centuries[century] = average(centuries[century])
+    }
+    console.log(centuries)
+
+    function groupBy(array, groupingOperation){
+        groups = {}
+        array.forEach(function(element){
+            groupName = groupingOperation(element)
+            if(groupName in groups)
+                groups[groupName].push(element)
+            else
+                groups[groupName] = [element]
+        })
+        return groups
+    }
+
+    var centuryGroups = groupBy(ancestors, function(person){
+        return Math.ceil(person.died / 100)
+    })
+
+    for(var century in centuryGroups){
+        centuryGroups[century] = average(centuryGroups[century].map(function(person){
+            return person.died - person.born
+        })) 
+    }
+
+    console.log(centuryGroups)
+}
+
+// Every and then some.
+function exercise4(){
+    console.log('\nEvery and then some\n')
+
+    // Not optimised
+    function every(array, predicate){
+        return array.reduce(function(a, b){
+            return a && predicate(b)}, true)
+    }
+    function some(array, predicate){
+        return array.reduce(function(a, b){
+            return a || predicate(b)}, false)
+    }
+
+    console.log(every([NaN, NaN, NaN], isNaN))
+    console.log(every([NaN, NaN, 4], isNaN))
+    console.log(some([NaN, 3, 4], isNaN))
+    console.log(some([2, 3, 4], isNaN))
+    console.log(every([1, 2, 3], function(num){return num > 0}))
+    console.log(every([1, 2, 0], function(num){return num > 0}))
+    console.log(some([0, 0, 0], function(num){return num > 0}))
+    console.log(some([1, -1, -1], function(num){return num > 0}))
+
+    // Optimised.
+    function everyOptim(array, predicate){
+        for(var i = 0; i < array.length; i++){
+            if(!predicate(array[i]))
+                return false
+        }
+        return true
+    }
+
+    function someOptim(array, predicate){
+        for(var i = 0; i < array.length; i++){
+            if(predicate(array[i]))
+                return true
+        }
+        return false
+    }
+
+    console.log('\n')
+    console.log(everyOptim([NaN, NaN, NaN], isNaN))
+    console.log(everyOptim([NaN, NaN, 4], isNaN))
+    console.log(someOptim([NaN, 3, 4], isNaN))
+    console.log(someOptim([2, 3, 4], isNaN))
+    console.log(everyOptim([1, 2, 3], function(num){return num > 0}))
+    console.log(everyOptim([1, 2, 0], function(num){return num > 0}))
+    console.log(someOptim([0, 0, 0], function(num){return num > 0}))
+    console.log(someOptim([1, -1, -1], function(num){return num > 0}))
+}
 // Data for this chapter downloaded from the book's website.
 var ANCESTRY_FILE = JSON.stringify([
     {"name": "Carolus Haverbeke", "sex": "m", "born": 1832, "died": 1905, "father": "Carel Haverbeke", "mother": "Maria van Brussel"},
