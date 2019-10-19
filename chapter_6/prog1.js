@@ -28,3 +28,28 @@ function example1(){
     speakFixed = speak.bind({type: 'fast'}, 'I am athlete.')
     speakFixed()
 }
+
+// Prototypes.
+function example2(){
+    console.log('\nPrototypes\n')
+    var empty = {}
+    console.log(empty.toString)
+    console.log(empty.toString())
+    // Prototype for all objects.
+    console.log(Object.getPrototypeOf({}) == Object.prototype)
+    console.log(Object.getPrototypeOf(isNaN) == Function.prototype)
+    console.log(Object.getPrototypeOf(Function.prototype) == Object.prototype)
+    console.log(Object.getPrototypeOf([]) == Array.prototype)
+    console.log(Object.getPrototypeOf(Array.prototype) == Object.prototype)
+
+    var protoRabbit = {
+        speak: function(line){
+            console.log('The ' + this.type + ' rabbit says "' + line + "'")
+        }
+    }
+
+    var killerRabbit = Object.create(protoRabbit)
+    killerRabbit.type = 'Killer'
+    killerRabbit.speak('Ready for action!')
+    console.log(Object.getPrototypeOf(killerRabbit) == protoRabbit)
+}

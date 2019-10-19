@@ -5,3 +5,8 @@ What I learned:
     + When a function is called as a method the special variable this in
     its body will point to the object that it was called on.
     + 'apply', 'call' and 'bind' are methods that functions have, that means function is treated as object.
+    + A prototype is another object that is used as a fallback source of properties. When an object gets
+    a request for a property that it does not have, its prototype will be searched for the property, 
+    then the prototype’s prototype, and so on.
+    + Object.prototype is base prototype of all objects.
+    + Object.getPrototypeOf() returns prototype of an object.
