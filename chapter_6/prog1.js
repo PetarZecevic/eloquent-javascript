@@ -53,3 +53,25 @@ function example2(){
     killerRabbit.speak('Ready for action!')
     console.log(Object.getPrototypeOf(killerRabbit) == protoRabbit)
 }
+
+// Constructors.
+function example3(){
+    console.log('\nConstructors')
+
+    function Rabbit(type){
+        this.type = type
+    }
+
+    var killerRabbit = new Rabbit("killer")
+    var blackRabbit = new Rabbit("black rabbit")
+
+    console.log(killerRabbit.type)
+    console.log(blackRabbit.type)
+
+    // Add method to class, by defining method.
+    Rabbit.prototype.speak = function(line){
+        console.log('The ' + this.type + ' rabbit says ' + line + '!')
+    }
+
+    blackRabbit.speak('Doom...')
+}

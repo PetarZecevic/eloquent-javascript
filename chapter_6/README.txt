@@ -10,3 +10,7 @@ What I learned:
     then the prototype’s prototype, and so on.
     + Object.prototype is base prototype of all objects.
     + Object.getPrototypeOf() returns prototype of an object.
+    + In JavaScript, calling a function with the new keyword in front of it causes it to be treated as a constructor.
+    + The constructor will have its this variable bound to a fresh object, and
+    unless it explicitly returns another object value, this new object will be
+    returned from the call.
