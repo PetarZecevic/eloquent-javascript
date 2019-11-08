@@ -14,3 +14,12 @@ What I learned:
     + The constructor will have its this variable bound to a fresh object, and
     unless it explicitly returns another object value, this new object will be
     returned from the call.
+    + A prototype can be used at any time to add new properties and methods
+    to all objects based on it.
+    + JavaScript distinguishes between enumerable and nonenumerable properties.
+    + All properties that we create by simply assigning to them are enumerable.
+    + The standard properties in Object.prototype are all nonenumerable,
+    which is why they do not show up in such a for/in loop.
+    + It is possible to define our own nonenumerable properties by using
+    the Object.defineProperty function.
+    + The object’s hasOwnProperty method checks if our object has the property, without checking the prototypes.

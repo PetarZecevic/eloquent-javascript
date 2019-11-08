@@ -75,3 +75,109 @@ function example3(){
 
     blackRabbit.speak('Doom...')
 }
+
+// Overriding derived properties
+function example4(){
+    console.log('\nOveriding derived properties')
+
+    function Car(type){
+        this.type = type
+    }
+
+    var bmwCar = new Car('BMW')
+    var audiCar = new Car('AUDI')
+
+    Car.prototype.price = 20000
+    console.log('BMW price: ' + bmwCar.price)
+    bmwCar.speedLimit = 50000
+    console.log('BMW speed limit: ' + bmwCar.speedLimit)
+    console.log('Audi speed limit: ' + audiCar.speedLimit)
+
+    console.log(Array.prototype.toString == Object.prototype.toString)
+    console.log([1,2,3].toString())
+    console.log(Object.getPrototypeOf([1,2,3]).toString.call([1,2]))
+    console.log(Object.prototype.toString.call([1,2]))
+}
+
+// Prototype interference
+function example5(){
+    console.log('\nPrototype interference')
+
+    // Class.
+    function Rabbit(type){
+        this.type = type
+    }
+
+    Rabbit.prototype.speak = function(line){
+        console.log('The ' + this.type + ' rabbit says ' + line + '!')
+    }
+
+    // Instance of the class.
+    whiteRabbit = new Rabbit('White')
+    whiteRabbit.speak()
+
+    // Adding new method to the class.
+    Rabbit.prototype.dance = function(){
+        console.log('The ' + this.type + ' rabbit dances a jig.')
+    }
+    whiteRabbit.dance()
+
+    // Prototype fields gettting in a way.
+    console.log('\n')
+    var map = {}
+    function storeEvent(event, probability){
+        map[event] = probability
+    }
+    map['A'] = 0.1
+    map['B'] = 0.3
+    // Enumerable property.
+    Object.prototype.nonsense = 0.3
+    for(var event in map){
+        console.log(event)
+    }
+    console.log('nonsense' in map)
+    console.log('toString' in map)
+    delete Object.prototype.nonsense
+
+    // Define nonenumerable property so that it doesn't show up in the for/in loop.
+    console.log('\n')
+    Object.defineProperty(Object.prototype, 'hiddenNonsense', {enumerable: false, value: 'hi'})
+    console.log(Object.prototype.hiddenNonsense)
+    for(event in map){
+        console.log(event)
+    }
+    console.log(map.hiddenNonsense)
+
+    // Check if our object has the property, without checking the prototypes.
+    console.log(map.hasOwnProperty('hiddenNonsense'))
+    console.log(map.hasOwnProperty('toString'))
+
+    // Recommended way of writing for/in loops.
+    console.log('\n')
+    Object.prototype.p1 = '1'
+    Object.prototype.p2 = '2'
+    for(var name in map){
+        if(map.hasOwnProperty(name)){
+            console.log(name)
+        }
+    }
+}
+
+// Prototype-less objects
+function example6(){
+    console.log('\nPrototype-less objects')
+
+    // Creating the object without the prototype.
+    var map = Object.create(null)
+    map['pizza'] = 500
+    map['cake'] = 1000
+    console.log('toString' in map)
+    console.log('pizza' in map)
+}
+
+// Polymorphism
+function example7(){
+    console.log('\nPolymorphism')
+
+    
+}
