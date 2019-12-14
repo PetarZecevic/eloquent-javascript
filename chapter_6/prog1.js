@@ -128,8 +128,10 @@ function example5(){
     function storeEvent(event, probability){
         map[event] = probability
     }
-    map['A'] = 0.1
-    map['B'] = 0.3
+
+    storeEvent('A', 0.1)
+    storeEvent('B', 0.3)
+
     // Enumerable property.
     Object.prototype.nonsense = 0.3
     for(var event in map){
@@ -177,7 +179,83 @@ function example6(){
 
 // Polymorphism
 function example7(){
-    console.log('\nPolymorphism')
+    console.log('\nPolymorphism - Example of laying out a table')
 
+    function Cell(){
+
+    }   
     
+    function minHeight(){
+        // Returns a number indicating the minimum height this cell requires (in lines).
+    }
+
+    function minWidth(){
+        // Returns a number indicating this cell's minimum width (in characters).
+    }
+
+    function draw(width, height){
+        // Returns an array of length 'height', which contains a series of strings that
+        // are each 'width' character wide.
+        // This represents the content of the cell.
+    }
+
+    /**
+     * Calculates the list of the values that represent,
+     * a minimum height required to draw each of the rows. 
+     * @param {matrix of cells} rows 
+     */
+    function rowHeights(rows){
+        return rows.map(function(row){
+            return row.reduce(function(max, cell){
+                return Math.max(max, cell.minHeight())
+            }, 0)
+        })
+    }
+
+    /**
+     * Calculates the list of the values that represent,
+     * a minimum width required to draw each of the columns. 
+     * @param {A matrix of cells} rows 
+     */
+    function colWidths(rows){
+        /**
+         * Using a variable name starting with an underscore (_) or consisting
+         * entirely of a single underscore is a way to indicate (to human readers)
+         * that this argument is not going to be used.
+         */
+        return rows[0].map(function(_, i){
+            // The second argument 'i' represents the index of the current element. 
+            return rows.reduce(function(max, row){
+                Math.max(max, row[i].minWidth())
+            }, 0)    
+        })
+    }
+
+    /**
+     * Draws a complete table by drawing each cell.
+     * @param {A matrix of cells} rows 
+     */
+    function drawTable(rows){
+        var heights = rowHeights(rows) 
+        var widths = colWidths(rows)
+
+        function drawLine(blocks, lineNo){
+            return blocks.map(function(block){
+                return block[lineNo]
+            }).join(" ")
+        }
+
+        function drawRow(row, rowNum){
+            var blocks = row.map(function(cell, colNum){
+                return cell.draw(widths[colNum], heights[rowNum])
+            })
+            /**
+             * Blocks that are in the same row have equal height,
+             * which means they have the same number of lines.
+             */
+            return blocks[0].map(function(_, lineNo){
+                return drawLine(blocks, lineNo)
+            }).join("\n")     
+        }
+    }
 }
