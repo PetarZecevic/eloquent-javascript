@@ -181,24 +181,6 @@ function example6(){
 function example7(){
     console.log('\nPolymorphism - Example of laying out a table')
 
-    function Cell(){
-
-    }   
-    
-    function minHeight(){
-        // Returns a number indicating the minimum height this cell requires (in lines).
-    }
-
-    function minWidth(){
-        // Returns a number indicating this cell's minimum width (in characters).
-    }
-
-    function draw(width, height){
-        // Returns an array of length 'height', which contains a series of strings that
-        // are each 'width' character wide.
-        // This represents the content of the cell.
-    }
-
     /**
      * Calculates the list of the values that represent,
      * a minimum height required to draw each of the rows. 
@@ -257,5 +239,103 @@ function example7(){
                 return drawLine(blocks, lineNo)
             }).join("\n")     
         }
+        return rows.map(drawRow).join("\n")
     }
+
+    /**
+     * Builds a string whose value is the {string} argument 
+     * repeated {times} number of times.
+     * @param {base string} string 
+     * @param {determines how many times to concatenate} times 
+     */
+    function repeat(string, times){
+        var result = ''
+        for(let i = 0; i < times; i++){
+            result += string
+        }
+        return result
+    }
+
+    /**
+     * Constructor for cells that contain text, which implements 
+     * the interface for table cells.
+     * @param {text that will be diplayed inside of the cell} text 
+     */
+    function TextCell(text){
+        this.text = text.split("\n")
+    }
+
+    /**
+     * Returns a number representing this cell's minimum width 
+     * (in characters).
+     */
+    TextCell.prototype.minWidth = function minWidth(){
+        return this.text.reduce(function(max, line){
+            return Math.max(max, line.length)
+        }, 0)
+    }
+
+    /**
+     * Returns a number representing the minimum height this cell 
+     * requires (in lines).
+     */
+    TextCell.prototype.minHeight = function (){
+        return this.text.length
+    }
+
+    /**
+     * Return an array of length {height}, which contatins a series of strings
+     * that are each {width} character wide.
+     * This array represents the content of the cell.
+     * @param {width of each row-string inside of cell} width 
+     * @param {number of cell rows} height 
+     */
+    TextCell.prototype.draw = function(width, height){
+        var result = []
+        for(let i = 0; i < height; i++){
+            // For the case wheere there are no required lines in text.
+            var line = this.text[i] || ""
+            // Function {repeat} is used to add padding if it is required.
+            result.push(line + repeat(" ", width - line.length))
+        }
+        return result
+    }
+
+    // Example of 5x5 checkerboard.
+    var rows = []
+    for(let i = 0; i < 5; i++){
+        var row = []
+        for(let j = 0; j < 5; j++){
+            if((j + i) % 2 == 0)
+                row.push(new TextCell('##'))
+            else
+                row.push(new TextCell('  '))
+        }
+        rows.push(row)
+    }
+    console.log(drawTable(rows))
+
+    /**
+     * Cell that underlines {TextCell} text.
+     * This cell is intented for table headers.
+     * @param {TextCell that represents text that will be underlined} inner
+     */
+    function UnderlinedCell(inner){
+        this.inner = inner
+    }
+
+    UnderlinedCell.prototype.minWidth = function(){
+        return this.inner.minWidth()
+    }
+
+    UnderlinedCell.prototype.minHeight = function(){
+        return this.inner.minHeight() + 1
+    }
+
+    UnderlinedCell.prototype.draw = function(width, height){
+        return this.inner.draw(width, height - 1)
+            .concat([repeat('-', width)])
+    }
+
+    
 }

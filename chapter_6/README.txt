@@ -23,3 +23,5 @@ What I learned:
     + It is possible to define our own nonenumerable properties by using
     the Object.defineProperty function.
     + The object’s hasOwnProperty method checks if our object has the property, without checking the prototypes.
+    + The second parameter in 'map' higher order function can be used to know ordinal numbers of the items 
+    we are iterating through.
