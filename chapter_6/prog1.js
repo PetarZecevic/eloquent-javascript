@@ -208,7 +208,7 @@ function example7(){
         return rows[0].map(function(_, i){
             // The second argument 'i' represents the index of the current element. 
             return rows.reduce(function(max, row){
-                Math.max(max, row[i].minWidth())
+                return Math.max(max, row[i].minWidth())
             }, 0)    
         })
     }
@@ -302,6 +302,7 @@ function example7(){
     }
 
     // Example of 5x5 checkerboard.
+    console.log('Test #2')
     var rows = []
     for(let i = 0; i < 5; i++){
         var row = []
@@ -337,5 +338,32 @@ function example7(){
             .concat([repeat('-', width)])
     }
 
-    
+    console.log('Test #1')
+    testUnderlindedCell = new UnderlinedCell(new TextCell('AAAAA'))
+    console.log('underlinned cell', testUnderlindedCell.minHeight(), testUnderlindedCell.minWidth())
+    testTable1 = [[testUnderlindedCell]] 
+    console.log('table', rowHeights(testTable1), colWidths(testTable1))
+
+    console.log('Test #3')
+    table = []
+    // Header.
+    headerTitle = ['City', 'Population']
+    header = []
+    for(let i = 0; i < headerTitle.length; i++)
+        header.push(new UnderlinedCell(new TextCell(headerTitle[i])))
+    table.push(header)
+    // Cities paired with their population number.
+    city_map = {
+        'Novi Sad' : '289128',
+        'Beograd' : '1374000',
+        'Sabac' : '53155',
+        'Kragujevac' : '150850',
+        'Loznica' : '8967'
+    }
+    for(city in city_map){
+        if(city_map.hasOwnProperty(city)){
+            table.push([new TextCell(city), new TextCell(city_map[city])])
+        }
+    }
+    console.log(drawTable(table))    
 }
