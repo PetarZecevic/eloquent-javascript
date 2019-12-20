@@ -367,3 +367,29 @@ function example7(){
     }
     console.log(drawTable(table))    
 }
+
+// Getters and setters.
+function example8(){
+    console.log('\nGetters and setters')
+
+    pilePrototype = {
+        elements: ['egshell', 'orange peel', 'worm'],
+        get height() {
+            return this.elements.length
+        },
+        set height(value) {
+            console.log('Ignoring attempt to set height to', value)
+        }
+    }
+
+    var pile = Object.create(pilePrototype)
+    console.log(pile.height)
+    pile.height = 0
+    console.log(pile.height)
+
+    Object.defineProperty(Object.getPrototypeOf(pile), "fitProp", {
+        get: function() {return this.elements[0]}
+    })
+    
+    console.log(pile.fitProp)
+}
