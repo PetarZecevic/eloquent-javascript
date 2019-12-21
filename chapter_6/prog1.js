@@ -393,3 +393,63 @@ function example8(){
     
     console.log(pile.fitProp)
 }
+
+// Inheritance.
+function example9(){
+    console.log('\nInheritance')
+
+    /**
+     * Base class that represents one subject in school.
+     * @param {name of the subject} name 
+     */
+    function Subject(name){
+        this.name = name
+    }
+
+    Subject.prototype.description = function(){
+        console.log('This subject is ' + this.name)
+    }
+
+    baseSubject = new Subject('History')
+    baseSubject.description()
+
+    /**
+     * Subject from math science.
+     * @param {represent math department} category 
+     */
+    function MathSubject(category){
+        Subject.call(this, 'Math')
+        this.category = category
+    }
+
+    MathSubject.prototype = Object.create(Subject.prototype)
+    // Overriding base class method.
+    MathSubject.prototype.description = function(){
+        Subject.prototype.description.call(this)
+        console.log('Category : ' + this.category)
+    }
+
+    mathSubject = new MathSubject('Algebra')
+    mathSubject.description()
+}
+
+// The instanceof operator.
+function example10(){
+    console.log('\nThe instanceof operator')
+
+    console.log([1] instanceof Array)
+    console.log('baba' instanceof String)
+
+    var s = new String('baba')
+    
+    console.log(s instanceof String)
+
+    function DummyClass(){
+        this.prop = 'dummy'
+    }
+    var dummy = new DummyClass()
+
+    console.log(dummy instanceof Array)
+    console.log(dummy instanceof DummyClass)
+    console.log(dummy instanceof Object)
+}
