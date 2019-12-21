@@ -510,4 +510,5 @@ function exercise1(){
 
     result = vec.minus(new Vector(0, 5))
     result.print()
+    
 }
