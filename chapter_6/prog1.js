@@ -456,7 +456,7 @@ function example10(){
 
 // Vector.
 function exercise1(){
-    console.log('\nVector')
+    console.log('\nVector - exercise 1')
 
     /**
      * Class representing 2D vector.
@@ -511,4 +511,159 @@ function exercise1(){
     result = vec.minus(new Vector(0, 5))
     result.print()
     
+}
+
+// Another cell.
+function exercise2(){
+    console.log('\nAnother cell - exercise 2')
+
+    /**
+     * Calculates the list of the values that represent,
+     * a minimum height required to draw each of the rows. 
+     * @param {matrix of cells} rows 
+     */
+    function rowHeights(rows){
+        return rows.map(function(row){
+            return row.reduce(function(max, cell){
+                return Math.max(max, cell.minHeight())
+            }, 0)
+        })
+    }
+
+    /**
+     * Calculates the list of the values that represent,
+     * a minimum width required to draw each of the columns. 
+     * @param {A matrix of cells} rows 
+     */
+    function colWidths(rows){
+        /**
+         * Using a variable name starting with an underscore (_) or consisting
+         * entirely of a single underscore is a way to indicate (to human readers)
+         * that this argument is not going to be used.
+         */
+        return rows[0].map(function(_, i){
+            // The second argument 'i' represents the index of the current element. 
+            return rows.reduce(function(max, row){
+                return Math.max(max, row[i].minWidth())
+            }, 0)    
+        })
+    }
+
+    /**
+     * Builds a string whose value is the {string} argument 
+     * repeated {times} number of times.
+     * @param {base string} string 
+     * @param {determines how many times to concatenate} times 
+     */
+    function repeat(string, times){
+        var result = ''
+        for(let i = 0; i < times; i++){
+            result += string
+        }
+        return result
+    }
+
+    /**
+     * Draws a complete table by drawing each cell.
+     * @param {A matrix of cells} rows 
+     */
+    function drawTable(rows){
+        var heights = rowHeights(rows) 
+        var widths = colWidths(rows)
+
+        function drawLine(blocks, lineNo){
+            return blocks.map(function(block){
+                return block[lineNo]
+            }).join(" ")
+        }
+
+        function drawRow(row, rowNum){
+            var blocks = row.map(function(cell, colNum){
+                return cell.draw(widths[colNum], heights[rowNum])
+            })
+            /**
+             * Blocks that are in the same row have equal height,
+             * which means they have the same number of lines.
+             */
+            return blocks[0].map(function(_, lineNo){
+                return drawLine(blocks, lineNo)
+            }).join("\n")     
+        }
+        return rows.map(drawRow).join("\n")
+    }
+
+    /**
+     * Constructor for cells that contain text, which implements 
+     * the interface for table cells.
+     * @param {text that will be diplayed inside of the cell} text 
+     */
+    function TextCell(text){
+        this.text = text.split("\n")
+    }
+
+    /**
+     * Returns a number representing this cell's minimum width 
+     * (in characters).
+     */
+    TextCell.prototype.minWidth = function minWidth(){
+        return this.text.reduce(function(max, line){
+            return Math.max(max, line.length)
+        }, 0)
+    }
+
+    /**
+     * Returns a number representing the minimum height this cell 
+     * requires (in lines).
+     */
+    TextCell.prototype.minHeight = function (){
+        return this.text.length
+    }
+
+    /**
+     * Return an array of length {height}, which contatins a series of strings
+     * that are each {width} character wide.
+     * This array represents the content of the cell.
+     * @param {width of each row-string inside of cell} width 
+     * @param {number of cell rows} height 
+     */
+    TextCell.prototype.draw = function(width, height){
+        var result = []
+        for(let i = 0; i < height; i++){
+            // For the case wheere there are no required lines in text.
+            var line = this.text[i] || ""
+            // Function {repeat} is used to add padding if it is required.
+            result.push(line + repeat(" ", width - line.length))
+        }
+        return result
+    }
+
+    function StretchCell(inner, width, height){
+        this.inner = inner
+        this.width = Math.max(this.inner.minWidth(), width)
+        this.height = Math.max(this.inner.minHeight(), height)
+    }
+
+    StretchCell.prototype.minWidth = function(){
+        return this.width
+    }
+
+    StretchCell.prototype.minHeight = function(){
+        return this.height
+    }
+
+    StretchCell.prototype.draw = function(width, height){
+        return this.inner.draw(width, height)
+    }
+
+    var table = []
+    table.push([new StretchCell(new TextCell("1"), 2, 2), new TextCell("2"), new TextCell("3")])
+    table.push([new TextCell("4"), new StretchCell(new TextCell("5"), 3, 1), new TextCell("6")])
+    console.log('Test table #1')
+    console.log(drawTable(table))
+
+    table = []
+    table.push([new TextCell("1"), new StretchCell(new TextCell("222"), 2, 1)])
+    table.push([new TextCell("3"), new TextCell("4")])
+    console.log('Test table #2')
+    console.log(drawTable(table))
 }
