@@ -637,6 +637,14 @@ function exercise2(){
         return result
     }
 
+    /**
+     * Cell that wraps around another cell and ensure that the resulting cell
+     * has at least the given {width} and {height}, even if the inner cell would
+     * naturally be smaller.
+     * @param {cell to wrap around} inner 
+     * @param {stretching width} width 
+     * @param {stretching height} height 
+     */
     function StretchCell(inner, width, height){
         this.inner = inner
         this.width = Math.max(this.inner.minWidth(), width)
@@ -666,4 +674,153 @@ function exercise2(){
     table.push([new TextCell("3"), new TextCell("4")])
     console.log('Test table #2')
     console.log(drawTable(table))
+}
+
+// Sequence interface.
+function exercise3(){
+    console.log('\nSequence interface - exercise 3')
+
+    /**
+     * Requirements for the process of iteration: 
+     *  - beginning of the sequence
+     *  - value of the current element in the sequence
+     *  - next element in the sequence
+     *  - end of the sequence
+     */
+
+    /**
+     * Interface used to abstract the element of the Sequence. 
+     */
+    function SequenceElement(){}
+    SequenceElement.prototype.getValue = function(){}
+    SequenceElement.prototype.next = function(){}
+    SequenceElement.prototype.equal = function(iterator){}
+    
+    /**
+     * Interface that abstracts iteration over a collection of values.
+     */
+    function Sequence(){}
+    Sequence.prototype.begin = function(){}
+    Sequence.prototype.end = function(){}
+
+    /**
+     * Function that calls console.log on the first five elements of the sequence
+     * or fewer, if the sequence has fewer than five elements.
+     * @param {Object that implements the Sequence interface} sequence 
+     */
+    function logFive(sequence){
+        var counter = 0
+        for(var element = sequence.begin(); 
+            !element.equal(sequence.end()) && counter < 5;
+            element = element.next(), counter += 1){
+                console.log(element.getValue())
+        }
+    }
+
+    /**
+     * Wraps an array and allows iteration over the array
+     * using the Sequence interface.
+     * @param {Array object} array 
+     */
+    function ArraySeq(array){
+        Sequence.call(this)
+
+        /**
+         * Represenation of the one element in the array.
+         * 
+         * @param {Position of the element in the original array} index 
+         */
+        function ArrayElement(index){
+            SequenceElement.call(this)
+            this.index = index
+        }
+        
+        ArrayElement.prototype = Object.create(SequenceElement.prototype)
+        
+        ArrayElement.prototype.getValue = function(){
+            return array[this.index]
+        }
+        
+        ArrayElement.prototype.next = function(){
+            return new ArrayElement(this.index+1)
+        }
+        
+        ArrayElement.prototype.equal = function(element){
+            return this.index == element.index
+        }
+        
+        this.firstElement = new ArrayElement(0)
+        this.endElement = new ArrayElement(array.length)
+    }
+
+    ArraySeq.prototype = Object.create(Sequence.prototype)
+
+    ArraySeq.prototype.begin = function(){
+        return this.firstElement   
+    }
+
+    ArraySeq.prototype.end = function(){
+        return this.endElement
+    }
+
+    function RangeSeq(from, to){
+        Sequence.call(this)
+
+        /**
+         * Representation of the one element in the range.
+         * @param {Value from the range} value 
+         */
+        function RangeElement(value){
+           SequenceElement.call(this)
+           this.value = value 
+        }
+
+        RangeElement.prototype = Object.create(SequenceElement.prototype)
+
+        RangeElement.prototype.getValue = function(){
+            return this.value
+        }
+
+        RangeElement.prototype.next = function(){
+            return new RangeElement(this.value+1)
+        }
+
+        RangeElement.prototype.equal = function(element){
+            return this.value == element.value
+        }
+
+        this.firstInRange = new RangeElement(from) 
+        this.endOfRange = new RangeElement(to+1)
+    }
+
+    RangeSeq.prototype = Object.create(Sequence.prototype)
+
+    RangeSeq.prototype.begin = function(){
+        return this.firstInRange
+    }
+
+    RangeSeq.prototype.end = function(){
+        return this.endOfRange
+    }
+
+    // Testing
+    console.log('Test ArraySeq')
+    console.log('Test #1')
+    logFive(new ArraySeq([1, 2, 3, 4, 5]))
+    console.log('Test #2')
+    logFive(new ArraySeq([1, 2, 3, 4]))
+    console.log('Test #3')
+    logFive(new ArraySeq([1, 2, 3]))
+    console.log('Test #4')
+    logFive(new ArraySeq([1, 2, 3, 4, 5, 6, 7, 8]))
+
+    console.log('Test RangeSeq')
+    console.log('Test #1')
+    logFive(new RangeSeq(1, 3))
+    console.log('Test #2')
+    logFive(new RangeSeq(0, 5))
+    console.log('Test #3')
+    logFive(new RangeSeq(-2, 2))
+    console.log('Test #4')
+    logFive(new RangeSeq(1, 10))
 }
