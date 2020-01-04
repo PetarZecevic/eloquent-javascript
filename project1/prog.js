@@ -31,18 +31,53 @@ Vector.prototype.minus = function(vector){
     return new Vector(this.x - vector.x, this.y - vector.y)
 }
 
+
+// Representing grid.
 /**
- * Calculates the euclidean vector distance from the origin point of the same dimension the vector.
+ * Two-dimensional matrix(grid) where each element represents
+ * one part of the world's space.
+ * @param {number of columns} width 
+ * @param {number of rows} height 
  */
-Object.defineProperty(Vector.prototype, 'length', {
-    get: function(){
-        return Math.sqrt(this.x**2 + this.y**2)
-    }
-})
+function Grid(width, height){
+    this.space = new Array(width * height)
+    this.width = width
+    this.height = height
+}
 
 /**
- * Method used to pretty print vector properties.
+ * Check if a vector is located inside of grid.
  */
-Vector.prototype.print = function(){
-    console.log('[', this.x, this.y, ']', 'length:', this.length)
+Grid.prototype.isInside = function(vector){
+    return vector.x >= 0 && vector.x < this.width &&
+        vector.y >= 0 && vector.y < this.height
+}
+
+/**
+ * Get a value from the grid at vector location.
+ */
+Grid.prototype.get = function(vector){
+    return this.space[vector.x + this.width * vector.y]
+}
+
+/**
+ * Set a value in the grid at a vector location.
+ */
+Grid.prototype.set = function(vector, value){
+    this.space[vector.x + this.width * vector.y] = value
+}
+
+function testGrid(){
+    console.log('\nTesting Grid class')
+    var grid = new Grid(5, 5)
+    
+    console.log('Test "set" and "get" methods')
+    console.log(grid.get(new Vector(1,1)))
+    grid.set(new Vector(1,1), '#')
+    console.log(grid.get(new Vector(1,1)))
+    
+    console.log('Test "isInside" method')
+    console.log(grid.isInside(new Vector(1,1)))
+    console.log(grid.isInside(new Vector(0,-1)))
+    console.log(grid.isInside(new Vector(5,3)))
 }

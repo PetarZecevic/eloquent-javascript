@@ -18,3 +18,11 @@ Example of the world:
 ##  o  #
 # o #  #
 ########
+
+What I learned:
+    - When calling the Array constructor with a single number as an argument, 
+    it creates a new empty array of the given length.
+    
+    - We can use one-dimensional array of size width*height as two-dimensional array by 
+    converting position indexing:
+     (x,y) -> x + (y * width)
