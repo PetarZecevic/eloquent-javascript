@@ -1,9 +1,22 @@
 function main(){
     console.log('\nProject: Electronic life')
-    console.log(directionNames)
 }
 
-// Representing space.
+var plan = [
+    '############################', 
+    '#        #   #   o        ##', 
+    '#                          #', 
+    '#          #####           #', 
+    '##     #   #       ##      #', 
+    '###   ##         #         #', 
+    '#          ###  #          #', 
+    '#     ####                 #', 
+    '#      ##     o            #', 
+    '# o    #        o      ### #', 
+    '#      #                   #', 
+    '############################'];
+
+    // Representing space.
 /**
  * Class representing 2D vector.
  * @param {first value(coordinate)} x 
@@ -112,7 +125,7 @@ function BouncingCritter() {
 
 /**
  * Returns an action based on the ispection of it's surroundings.
- * @param {reprents critter vision} view
+ * @param {represents critter's vision} view
  */
 BouncingCritter.prototype.act = function(view) {
     if (view.look(this.direction) != ' ')
@@ -151,8 +164,43 @@ function World(map, legend) {
     this.legend = legend
 
     map.forEach(function(line, y){
-        line.forEach(function(ch, x){
-            grid.set(new Vector(x, y), elementFromChar(legend, ch))
-        })
+        for(var x = 0; x < line.length; x++){
+            grid.set(new Vector(x, y), elementFromChar(legend, line[x]))
+        }
     })
+}
+
+function charFromElement(element) {
+    if(element == null)
+        return " "
+    else 
+        return element.originChar
+}
+
+/**
+ * Build a maplike string from the world's current state 
+ * by performing a two-dimensional loop over the squares
+ * on the grid.
+ */
+World.prototype.toString = function() {
+    var output = ""
+    for(var y = 0; y < this.grid.height; y++){
+        for(var x = 0; x < this.grid.width; x++){
+            var element = this.grid.get(new Vector(x, y))
+            output += charFromElement(element)
+        }
+        output += '\n'
+    }
+    return output
+}
+
+// A simple object that is used for taking up space and has no 'act' method.
+function Wall() {}
+
+function testWorld(){
+    console.log('\nTesting World class\n')
+    console.log('Test "toString" method')
+    var world = new World(plan, {'#' : Wall,
+                                'o': BouncingCritter})
+    console.log(world.toString())    
 }
