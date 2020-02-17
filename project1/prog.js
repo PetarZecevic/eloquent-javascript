@@ -124,7 +124,7 @@ function BouncingCritter() {
 }
 
 /**
- * Returns an action based on the ispection of it's surroundings.
+ * Returns an action based on the inspection of it's surroundings.
  * @param {represents critter's vision} view
  */
 BouncingCritter.prototype.act = function(view) {
@@ -203,4 +203,137 @@ function testWorld(){
     var world = new World(plan, {'#' : Wall,
                                 'o': BouncingCritter})
     console.log(world.toString())    
+}
+
+// This and it's scope
+var testScopeObject = {
+    prop: 10,
+    addPropTo: function(array){
+        return array.map(function(elt){
+            return this.prop + elt
+        }.bind(this))
+    }
+}
+
+function testScope(){
+    console.log('Testing scope: ' + testScopeObject.addPropTo([5]))
+}
+
+// Our own higher-order function.
+Grid.prototype.forEach = function(f, context){
+    for(var y = 0; y < this.height; y++){
+        for(var x = 0; x < this.width; x++){
+            var value = this.space[x + y * this.width]
+            if(value != null){
+                f.call(context, value, new Vector(x, y))
+            }
+        }
+    }
+}
+
+// Animating life.
+/**
+ * Method that goes over the grid using for each method
+ * that we defined, looking for objects with an act method.
+ * When it finds one, it calls that method to get an action object
+ * and carries out the action when it is valid.
+ */
+World.prototype.turn = function() {
+    // Helper variable to remember which critters already acted. 
+    var acted = [] 
+    this.grid.forEach(function(critter , vector) { 
+        if (critter.act && acted.indexOf(critter) == -1) { 
+            acted.push(critter) 
+            this.letAct(critter , vector) 
+        } 
+    }, this)
+}
+
+/**
+ * Contains the actual logic that allows the critters to move.
+ * @param {} critter
+ * @param {} vector
+ */
+World.prototype.letAct = function(critter, vector){
+    var action = critter.act(new View(this, vector))
+    if(action && action.type == 'move'){
+        var dest = this.checkDestination(action, vector)
+        if(dest && this.grid.get(dest) == null){
+            this.grid.set(vector, null)
+            this.grid.set(dest, critter)
+        }
+    }
+}
+
+/**
+ * Checking whether action is valid and
+ * next move is inside of the grid.
+ * @param {} action
+ * @param {} vector
+ */
+World.prototype.checkDestination = function(action, vector){
+    if(directions.hasOwnProperty(action.direction)){
+        var dest = vector.plus(directions[action.direction])
+        if(this.grid.isInside(dest))
+            return dest
+    }
+}
+
+// View object
+
+function View(world, vector){
+    this.world = world
+    this.vector = vector
+}
+
+/**
+ * Figures out the coordinates that we are trying to look at and, 
+ * if they are inside the grid, finds the character corresponding to 
+ * the element that sits there. 
+ * For coordinates outside the grid, look simply pretends that there 
+ * is a wall there so that if you define a world that isn’t walled in, 
+ * the critters still won’t be tempted to try to walk off the edges.
+ * @param {} dir
+ */
+View.prototype.look = function(dir) {
+    var target = this.vector.plus(directions[dir])
+    if (this.world.grid.isInside(target)) 
+        return charFromElement(this.world.grid.get(target))
+    else 
+        return "#"
+}
+
+/**
+ * Find all directions where the character is located.
+ * @param {} ch
+ */
+View.prototype.findAll = function(ch){
+    var found = []
+    for (var dir in directions) 
+        if (this.look(dir) == ch) 
+            found.push(dir)
+    return found
+}
+
+/**
+ * Finds and pick one random directions for the directions
+ * where the character is located.
+ * @param {} ch
+ */
+View.prototype.find = function(ch) {
+    var found = this.findAll(ch)
+    if(found.length == 0)
+        return null
+    return randomElement(found)
+}
+
+function firstLife(){
+    console.log('First simulation of bouncing critters')
+    var world = new World(plan, 
+            {'#' : Wall,
+            'o': BouncingCritter})
+    for(var i = 0; i < 5; i++){
+        world.turn()
+        console.log(world.toString())
+    }
 }
